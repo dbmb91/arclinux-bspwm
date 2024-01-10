@@ -90,4 +90,14 @@ sudo pacman -S zsh
 ## oh-my-zsh
 sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
+########################################### Temas #################################################
+### Install temas Archcraft
+Temas:
+curl -s https://raw.githubusercontent.com/thespation/dpux_bspwm/main/scripts/temas.sh | bash
+
+Icones:
+curl -s https://raw.githubusercontent.com/thespation/dpux_bspwm/main/scripts/icones.sh | bash
+
+
+#################################################################################################
 
