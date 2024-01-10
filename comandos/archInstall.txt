@@ -1,0 +1,93 @@
+##### Comandos para iniciar a instalação do Archlinux bspwm #####
+
+sudo pacman -S nano base-devel 
+sudo pacman -S make git curl wget ninja cmake neofetch lolcat firefox-i18n-pt-br 
+
+Install "nano plugins" curl ou wget
+curl:
+curl https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh | sh
+
+wget:
+wget https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh -O- | sh
+
+#################################### pacman.conf ###############################################
+acessar o arquivo /etc/pacman.conf
+
+## Descomentar os comandos abaixo:
+color
+ParallelDownloads = 10
+
+## add no arquivo
+ILoveCandy
+
+#################################### yay #######################################################
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+
+#################################### xorg ambiente grafico #####################################
+## Instalar tudos os pacotes "xorg"
+sudo pacman -S xorg
+
+## Instalar pacotes "xorg-Minimal"
+sudo pacman -S xorg-server xorg-xinit xorg-xrandr xorg-xkill xorg-fonts-misc xorg-xprop xorg-xset xorg xorg-xsetroot
+sudo pacman -S xorg-xwininfo xclip libxcb xcb-util-keysysms xcb-util-xcursor
+
+#################################### pacotes bspwm ##############################################
+sudo pacman -S bspwm sxhkd nitrogen feh lxappearance dunst dmenu rofi xfce4-terminal mousepad 
+
+sudo pacman -S numlockx open-vm-tools xf86-video-vmware gtkmm3 ttf-hack-nerd ttf-hack 
+
+sudo pacman -S thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman 
+
+yay -S picom polybar-themes-git betterlockscreen pacman-contrib ttf-font-awesome siji-git
+
+#################################### Criando o ambiente do bspwm ################################
+## Comando abaixo vai criar as "pastas" no diretório ".config"
+cd $HOME/.config
+mkdir bspwm sxhkd polybar picom dunst
+
+## Copiando os arquivos para as pastas
+cp /usr/share/doc/bspwm/exaples/bspwmrc bspwm/
+cp /usr/share/doc/bspwm/exaples/sxhkdrc sxhkd/
+cp /etc/xdg/picom.conf picom/
+cp /etc/polybar/config.ini polybar/
+cp /etc/dunst/dunstrc dunst/
+
+##
+## Criando arquivo de inicializacao
+cp -r /etc/X11/xinit/xinitrc .xinitrc
+nano .xinitrc
+exec bspwm
+
+
+  
+
+#################################################################################################
+
+#####
+## comando abaixo para instalar as pastas do usuário local
+sudo pacman -S xdg-user-dirs-gtk
+## executar o comando apos a instalação do comando acima!
+xdg-user-dirs-gtk-updatenu
+
+#####
+## Instar lightdm
+sudo pacman -S lightdm lightdm-gtk-greeter-settings
+sudo systemctl enable lightdm.service
+sudo systemctl restart lightdm.service
+
+#####
+## para funcionar o copy and paste
+sudo nano /etc/xdg/startkderc
+[Gerenal]
+systemBoot=false
+
+########################################### ZSH ###################################################
+## zsh 
+sudo pacman -S zsh
+
+## oh-my-zsh
+sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+
