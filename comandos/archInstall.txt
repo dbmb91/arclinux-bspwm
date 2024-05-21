@@ -39,7 +39,7 @@ sudo pacman -S bspwm sxhkd nitrogen feh lxappearance dunst dmenu rofi xfce4-term
 sudo pacman -S numlockx open-vm-tools xf86-video-vmware gtkmm3 ttf-hack-nerd ttf-hack 
 
 sudo pacman -S thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman 
-
+.
 yay -S picom polybar-themes-git betterlockscreen pacman-contrib ttf-font-awesome siji-git
 
 #################################### Criando o ambiente do bspwm ################################
@@ -59,15 +59,109 @@ cp /etc/dunst/dunstrc dunst/
 cp -r /etc/X11/xinit/xinitrc .xinitrc
 nano .xinitrc
 exec bspwm
+.
+.
+
+## configurando o arquivo de atalhos "sxhkdrc"
+nano .config/sxhkd/sxhkdrc
+.
+.
+
+## Ao abrir o arquivo... alterar o terminal padrão
+Terminal: alacritty
+.
+.
+
+## Colocar o comando abaixo no arquivo do bspwm
+$HOME/.config/polybar/launch.sh
+.
+.
+
+## Crie o arquivo launch na pasta do polybar
+touch .config/polybar/launch.sh
+.
+.
+
+## Execute o comando para tornar o launch executavel
+chmod +x .config/polybar/launch.sh
+.
+.
+
+## copie o texto abaixo para dentro do arquivo launch
+#!/bin/bash
 
 
-  
+# Terminate already running bar instances
+killall -q polybar
+# If all your bars have ipc enabled, you can also use
+# polybar-msg cmd quit
+# Launch Polybar, using default config location ~/.config/polybar/config.ini
+polybar mybar 2>&1 | tee -a /tmp/polybar.log & disown
+
+echo "Polybar launched..."
+
+.
+.
+
+
+## add no arquivo .bashrc_profile ou .zprofile
+
+if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+  exec startx
+fi
+.
+.
+
+## add no arquivo "bspwmrc"
+
+if [[ $(xrandr -q | grep "Virtual-1 connected") ]];
+   then
+      xrandr --output Virtual-1  --primary --mode 1440x900 --pos 0x0  --rotate normal \
+             --output DVI-I-1 --off \
+             --output DVI-I-2 --off 
+      bspc monitor Virtual-1 -d I II III IV V VI VII VIII IX
+   fi
+ 
+ ## add os comandos abaixo no final do arquivo "bspwm"
+ ## Auto Start  
+.
+.
+
+##     
+numlockx &
+sxhkd &
+xsetroot -cursor_name left_ptr &
+setxkbmap br &
+#copyq &
+dunst &
+feh --bg-fill --no-fehbg --randomize $HOME/Imagens/Wallpapers/* &
+picom --config $HOME/.config/picom/picom.conf &
+$HOME/.config/polybar/launch.sh --cuts &
+xfce4-clipman &
+vmware-user-suid-wrapper 
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+   
+
+.
+.
+
+## para funcionar o copy and paste
+sudo nano /etc/xdg/startkderc
+
+[Gerenal]
+systemBoot=false
+.
+.
+
+
+
 
 #################################################################################################
 
 #####
 ## comando abaixo para instalar as pastas do usuário local
 sudo pacman -S xdg-user-dirs-gtk
+
 ## executar o comando apos a instalação do comando acima!
 xdg-user-dirs-gtk-updatenu
 
